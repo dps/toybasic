@@ -1,0 +1,28 @@
+/LET/ {println("LET")}
+/IF/ {println("IF")}
+/THEN/ {println("THEN")}
+/PRINT/ {println("PRINT")}
+/GOTO/ {println("GOTO")}
+/END/ {println("END")}
+/</ {println("LT")}
+/<=/ {println("LE")}
+/>/ {println("GT")}
+/>=/ {println("GE")}
+/==/ {println("EQ")}
+/!=/ {println("NE")}
+/[0-9]+/          { println("An integer:", txt()) }
+/[0-9]+\.[0-9]*/  { println("A float:", txt()) }
+/"[^"]*"/ { println("A string:", txt()) }
+/[a-z]/  { println("An identifier:", txt()) }
+/\+|-|\*|\/|=|\(|\)/      { println("An operator:", txt()) }
+/[ \t]+/        { /* eat up whitespace */ }
+/\n/ { println ("CR")}
+/./               { println("Unrecognized character:", txt()) }
+//
+package main
+import "os"
+func main() {
+  lex := NewLexer(os.Stdin)
+  txt := func() string { return lex.Text() }
+  NN_FUN(lex)
+}
