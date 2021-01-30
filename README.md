@@ -1,2 +1,2 @@
 # toybasic
-A toy basic interpreter playground
+A toy basic interpreter playground in golang. I'm making this just for fun.
