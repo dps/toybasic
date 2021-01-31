@@ -42,6 +42,18 @@ func (op StringOp) Execute() {
 	fmt.Fprint(writer, op.val)
 }
 
+type IntOp struct {
+	opType int
+	val    int
+}
+
+func (op IntOp) Type() int {
+	return op.opType
+}
+func (op IntOp) Execute() {
+	fmt.Fprint(writer, op.val)
+}
+
 type PrintOp struct {
 	opType     int
 	expression Node

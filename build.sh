@@ -4,7 +4,7 @@ go run golang.org/x/tools/cmd/goyacc -o toybasic.go parser.y
 go build -o toybasic toybasic.go lexer.nn.go compiler.go
 
 
-echo "10 PRINT \"Hello\"" | ./toybasic
+echo "10 PRINT 1" | ./toybasic
 echo
 echo ------
 echo ------

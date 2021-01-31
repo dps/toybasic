@@ -24,9 +24,9 @@ func variable(name rune) Op {
     return Op{VARIABLE, nil}
 }
 
-func integer(val int) Op {
+func integer(val int) Node {
     fmt.Printf("Integer", val)
-    return Op{INTEGER, nil}
+    return IntOp{INTEGER, val}
 }
 
 func decimal(val float64) Op {
