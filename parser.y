@@ -5,34 +5,16 @@ import "fmt"
 var registers = make([]int, 26)
 var line = 0
 
-type Line struct {
-    lineNum int;
-    statement Op;
-}
-
-
-func ex(op Op, lineNum int) Line {
+func ex(op Node, lineNum int) Line {
     fmt.Printf("Line", lineNum)
-    return Line{lineNum, op};
+    op.Execute()
+    return Line{lineNum, op}
 }
 
-type PrintOp struct {
-    opType int
-    expression Node
-}
-func (op PrintOp) Type() {
-    return op.opType
-}
-func (op PrintOp) Execute() {
-    fmt.Fprint(writer, "fmt.Println(")
-	op.expression.Execute()
-	fmt.Fprintln(writer, ")")
-}
-
-func opr(op int, nargs int, args ...interface{}) Op {
+func opr(op int, nargs int, args ...interface{}) Node {
     fmt.Printf("Op", op, nargs, args)
     if op == PRINT {
-        return PrintOp{op, args[0]}
+        return PrintOp{op, args[0].(Node)}
     }
     return Op{op, nil}
 }
@@ -52,18 +34,7 @@ func decimal(val float64) Op {
     return Op{DECIMAL, nil}
 }
 
-type StringOp struct {
-    opType int
-    val string
-}
-func (op StringOp) Type() {
-    return op.opType
-}
-func (op StringOp) Execute() {
-	fmt.Fprint(writer, op.val)
-}
-
-func basString(val string) Op {
+func basString(val string) Node {
     fmt.Printf("String", val)
     return StringOp{STRING, val}
 }
@@ -75,7 +46,7 @@ func basString(val string) Op {
     s string /* String */
     num int  /* Integer constant. */
     dec float64  /* Decimal constant. */
-    node Op /* Node object. */
+    node Node /* Node object. */
 };
 
 %token <num> INTEGER
