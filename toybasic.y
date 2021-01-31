@@ -5,11 +5,6 @@ import "fmt"
 var registers = make([]int, 26)
 var line = 0
 
-type Op struct {
-    opType int;
-    operands []interface{};
-}
-
 type Line struct {
     lineNum int;
     statement Op;
@@ -17,17 +12,33 @@ type Line struct {
 
 
 func ex(op Op, lineNum int) Line {
-    fmt.Printf("Line", lineNum);
+    fmt.Printf("Line", lineNum)
     return Line{lineNum, op};
 }
 
+type PrintOp struct {
+    opType int
+    expression Node
+}
+func (op PrintOp) Type() {
+    return op.opType
+}
+func (op PrintOp) Execute() {
+    fmt.Fprint(writer, "fmt.Println(")
+	op.expression.Execute()
+	fmt.Fprintln(writer, ")")
+}
+
 func opr(op int, nargs int, args ...interface{}) Op {
-    fmt.Printf("Op", op, nargs, args);
+    fmt.Printf("Op", op, nargs, args)
+    if op == PRINT {
+        return PrintOp{op, args[0]}
+    }
     return Op{op, nil}
 }
 
 func variable(name rune) Op {
-    fmt.Printf("Variable", name);
+    fmt.Printf("Variable", name)
     return Op{VARIABLE, nil}
 }
 
@@ -41,9 +52,20 @@ func decimal(val float64) Op {
     return Op{DECIMAL, nil}
 }
 
+type StringOp struct {
+    opType int
+    val string
+}
+func (op StringOp) Type() {
+    return op.opType
+}
+func (op StringOp) Execute() {
+	fmt.Fprint(writer, op.val)
+}
+
 func basString(val string) Op {
     fmt.Printf("String", val)
-    return Op{STRING, nil}
+    return StringOp{STRING, val}
 }
 
 %}

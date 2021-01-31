@@ -23,7 +23,10 @@ package main
 import "os"
 import "strconv"
 func main() {
+  OpenOutput()
+  WriteLeader()
   lex := NewLexer(os.Stdin)
   // NN_FUN(lex)
   yyParse(lex)
+  WriteTrailer()
 }
