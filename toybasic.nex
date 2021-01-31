@@ -1,28 +1,29 @@
-/LET/ {println("LET")}
-/IF/ {println("IF")}
-/THEN/ {println("THEN")}
-/PRINT/ {println("PRINT")}
-/GOTO/ {println("GOTO")}
-/END/ {println("END")}
-/</ {println("LT")}
-/<=/ {println("LE")}
-/>/ {println("GT")}
-/>=/ {println("GE")}
-/==/ {println("EQ")}
-/!=/ {println("NE")}
-/[0-9]+/          { println("An integer:", txt()) }
-/[0-9]+\.[0-9]*/  { println("A float:", txt()) }
-/"[^"]*"/ { println("A string:", txt()) }
-/[a-z]/  { println("An identifier:", txt()) }
-/\+|-|\*|\/|=|\(|\)/      { println("An operator:", txt()) }
+/LET/ {println("LET"); return LET;}
+/IF/ {println("IF"); return IF;}
+/THEN/ {println("THEN"); return THEN;}
+/PRINT/ {println("PRINT"); return PRINT;}
+/GOTO/ {println("GOTO"); return GOTO;}
+/END/ {println("END"); return END;}
+/</ {println("LT"); return LT;}
+/<=/ {println("LE"); return LE;}
+/>/ {println("GT"); return GT;}
+/>=/ {println("GE"); return GE;}
+/==/ {println("EQ"); return EQ;}
+/!=/ {println("NE"); return NE;}
+/[0-9]+/          {lval.num, _ = strconv.Atoi(yylex.Text()); println("An integer:", yylex.Text()); return INTEGER }
+/[0-9]+\.[0-9]*/  { println("A float:", yylex.Text()) }
+/"[^"]*"/ { lval.s = yylex.Text();println("A string:", yylex.Text()); return STRING; }
+/[a-z]/  { println("An identifier:", yylex.Text()) }
+/\+|-|\*|\/|=|\(|\)/      { println("An operator:", yylex.Text()) }
 /[ \t]+/        { /* eat up whitespace */ }
-/\n/ { println ("CR")}
-/./               { println("Unrecognized character:", txt()) }
+/\n/ { println ("CR"); return CR;}
+/./               { println("Unrecognized character:", yylex.Text()) }
 //
 package main
 import "os"
+import "strconv"
 func main() {
   lex := NewLexer(os.Stdin)
-  txt := func() string { return lex.Text() }
-  NN_FUN(lex)
+  // NN_FUN(lex)
+  yyParse(lex)
 }
