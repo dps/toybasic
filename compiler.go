@@ -247,7 +247,7 @@ func WriteLeader() {
 import "fmt"
 
 func main() {
-	var registers = make([]int, 26)
+	var registers = make([]float64, 26)
 	_ = registers
 
 	goto start

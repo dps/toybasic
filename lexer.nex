@@ -10,13 +10,13 @@
 />=/ {println("GE"); return GE;}
 /==/ {println("EQ"); return EQ;}
 /!=/ {println("NE"); return NE;}
-/[0-9]+/          {lval.num, _ = strconv.Atoi(yylex.Text()); println("An integer:", yylex.Text()); return INTEGER }
-/[0-9]+\.[0-9]*/  { println("A float:", yylex.Text()) }
-/"[^"]*"/ { lval.s = yylex.Text();println("A string:", yylex.Text()); return STRING; }
-/[a-zA-Z]/  { println("An identifier:", yylex.Text()); lval.v = yylex.Text();  return VARIABLE }
-/\+|-|\*|\/|=|\(|\)|,/      { println("An operator:", yylex.Text()); return int(yylex.Text()[0]);}
+/[0-9]+/          {lval.num, _ = strconv.Atoi(yylex.Text()); return INTEGER }
+/[0-9]+\.[0-9]*/  {lval.dec, _ = strconv.ParseFloat(yylex.Text(), 64);return DECIMAL }
+/"[^"]*"/ { lval.s = yylex.Text(); return STRING }
+/[a-zA-Z]/  { lval.v = yylex.Text(); return VARIABLE }
+/\+|-|\*|\/|=|\(|\)|,/      { /* use the char value of themselves as IDs*/ return int(yylex.Text()[0]);}
 /[ \t]+/        { /* eat up whitespace */ }
-/\n/ { println ("CR"); return CR;}
+/\n/ {return CR;}
 /./               { println("Unrecognized character:", yylex.Text()) }
 //
 package main
@@ -26,8 +26,6 @@ func main() {
   OpenOutput()
   WriteLeader()
   lex := NewLexer(os.Stdin)
-  // NN_FUN(lex)
-  //yyDebug        = 5
 	yyErrorVerbose = true
   yyParse(lex)
   WriteTrailer()
