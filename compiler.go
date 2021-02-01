@@ -128,6 +128,7 @@ type GotoOp struct {
 func (op GotoOp) Execute() {
 	fmt.Fprintf(writer, "goto label_")
 	op.expression.Execute()
+	fmt.Fprintf(writer, ";")
 }
 
 type InfixOp struct {
