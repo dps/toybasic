@@ -18,6 +18,36 @@ type Node interface {
 	Type() int
 }
 
+func ex(op Node, lineNum int) Line {
+	fmt.Printf("Line", lineNum)
+	fmt.Fprintf(writer, "goto label_%d;", lineNum)
+	fmt.Fprintf(writer, "label_%d:", lineNum)
+	fmt.Fprintln(writer, " // line ", lineNum)
+
+	op.Execute()
+	return Line{lineNum, op}
+}
+
+func opr(op int, nargs int, args ...interface{}) Node {
+	fmt.Printf("Op", op, nargs, args)
+	if op == PRINT {
+		return PrintOp{op, args[0].(Node)}
+	}
+	if op == '+' || op == '-' || op == '*' || op == '/' {
+		return InfixOp{op, args[0].(Node), args[1].(Node), string(op)}
+	}
+	if op == '(' {
+		return GroupingOp{op, args[0].(Node)}
+	}
+	if op == 'l' {
+		return ListOp{op, args[0].(Node), args[1].(Node)}
+	}
+	if op == GOTO {
+		return GotoOp{op, args[0].(Node)}
+	}
+	return Op{op, args[0].(string)}
+}
+
 // Generic Op is used for pass through operators (e.g. math) that
 // work the same way in BASIC as they do in Go.
 type Op struct {
@@ -30,6 +60,19 @@ func (op Op) Type() int {
 }
 func (op Op) Execute() {
 	fmt.Fprint(writer, op.operator)
+}
+
+type GotoOp struct {
+	opType     int
+	expression Node
+}
+
+func (op GotoOp) Type() int {
+	return op.opType
+}
+func (op GotoOp) Execute() {
+	fmt.Fprintf(writer, "goto label_")
+	op.expression.Execute()
 }
 
 type InfixOp struct {

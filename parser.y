@@ -2,31 +2,7 @@
 package main
 import "fmt"
 
-var registers = make([]int, 26)
 var line = 0
-
-func ex(op Node, lineNum int) Line {
-    fmt.Printf("Line", lineNum)
-    op.Execute()
-    return Line{lineNum, op}
-}
-
-func opr(op int, nargs int, args ...interface{}) Node {
-    fmt.Printf("Op", op, nargs, args)
-    if op == PRINT {
-        return PrintOp{op, args[0].(Node)}
-    }
-    if op == '+' || op == '-' || op == '*' || op == '/' {
-        return InfixOp{op, args[0].(Node), args[1].(Node), string(op)}
-    }
-    if op == '(' {
-        return GroupingOp{op, args[0].(Node)}
-    }
-    if op == 'l' {
-        return ListOp{op, args[0].(Node), args[1].(Node)}
-    }
-    return Op{op, args[0].(string)}
-}
 
 func variable(name string) Op {
     fmt.Printf("Variable", name)
