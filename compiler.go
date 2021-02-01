@@ -20,7 +20,6 @@ type Node interface {
 }
 
 func ex(op Node, lineNum int) Line {
-	fmt.Printf("Line", lineNum)
 	fmt.Fprintf(writer, "goto label_%d;", lineNum)
 	fmt.Fprintf(writer, "label_%d:", lineNum)
 	fmt.Fprintln(writer, " // line ", lineNum)
@@ -30,27 +29,22 @@ func ex(op Node, lineNum int) Line {
 }
 
 func opr(op int, nargs int, args ...interface{}) Node {
-	fmt.Printf("Op", op, nargs, args)
 	if op == PRINT {
 		return PrintOp{op, args[0].(Node)}
-	}
-	if op == '+' || op == '-' || op == '*' || op == '/' {
+	} else if op == '+' || op == '-' || op == '*' || op == '/' {
 		return InfixOp{op, args[0].(Node), args[1].(Node), string(op)}
-	}
-	if op == '(' {
+	} else if op == '(' {
 		return GroupingOp{op, args[0].(Node)}
-	}
-	if op == 'l' {
+	} else if op == 'l' {
 		return ListOp{op, args[0].(Node), args[1].(Node)}
-	}
-	if op == GOTO {
+	} else if op == GOTO {
 		return GotoOp{op, args[0].(Node)}
-	}
-	if op == LET {
+	} else if op == LET {
 		return LetOp{op, args[0].(VarOp), args[1].(Node)}
-	}
-	if op == IF {
+	} else if op == IF {
 		return ConditionalOp{op, args[0].(Node), args[2].(Node), args[1].(RelOp), args[3].(Node)}
+	} else if op == END {
+		return EndOp{op}
 	}
 	return Op{op, args[0].(string)}
 }
@@ -83,6 +77,17 @@ func (op LetOp) Execute() {
 	fmt.Fprintf(writer, "registers[%d] = ", regNum)
 	op.expression.Execute()
 	fmt.Fprintln(writer)
+}
+
+type EndOp struct {
+	opType int
+}
+
+func (op EndOp) Type() int {
+	return op.opType
+}
+func (op EndOp) Execute() {
+	fmt.Fprintln(writer, "goto end")
 }
 
 type RelOp struct {
@@ -252,7 +257,7 @@ func main() {
 
 	goto start
 start:
-	`)
+`)
 }
 
 func WriteTrailer() {

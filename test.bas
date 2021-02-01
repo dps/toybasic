@@ -14,3 +14,5 @@
 130 IF 2 > 1 THEN GOTO 150
 140 PRINT "You should never see this"
 150 PRINT "Yeah!"
+160 END
+170 PRINT "You should never see this"

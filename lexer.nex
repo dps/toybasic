@@ -1,23 +1,23 @@
-/LET/ {println("LET"); return LET;}
-/IF/ {println("IF"); return IF;}
-/THEN/ {println("THEN"); return THEN;}
-/PRINT/ {println("PRINT"); return PRINT;}
-/GOTO/ {println("GOTO"); return GOTO;}
-/END/ {println("END"); return END;}
-/</ {println("LT"); return LT;}
-/<=/ {println("LE"); return LE;}
-/>/ {println("GT"); return GT;}
-/>=/ {println("GE"); return GE;}
-/==/ {println("EQ"); return EQ;}
-/!=/ {println("NE"); return NE;}
-/[0-9]+/          {lval.num, _ = strconv.Atoi(yylex.Text()); return INTEGER }
-/[0-9]+\.[0-9]*/  {lval.dec, _ = strconv.ParseFloat(yylex.Text(), 64);return DECIMAL }
-/"[^"]*"/ { lval.s = yylex.Text(); return STRING }
-/[a-zA-Z]/  { lval.v = yylex.Text(); return VARIABLE }
+/LET/ {return LET}
+/IF/ {return IF}
+/THEN/ {return THEN}
+/PRINT/ {return PRINT}
+/GOTO/ {return GOTO}
+/END/ {return END}
+/</ {return LT}
+/<=/ {return LE}
+/>/ {return GT}
+/>=/ {return GE}
+/==/ {return EQ}
+/!=/ {return NE}
+/[0-9]+/          {lval.num, _ = strconv.Atoi(yylex.Text()); return INTEGER}
+/[0-9]+\.[0-9]*/  {lval.dec, _ = strconv.ParseFloat(yylex.Text(), 64);return DECIMAL}
+/"[^"]*"/ { lval.s = yylex.Text(); return STRING}
+/[a-zA-Z]/  { lval.v = yylex.Text(); return VARIABLE}
 /\+|-|\*|\/|=|\(|\)|,/      { /* use the char value of themselves as IDs*/ return int(yylex.Text()[0]);}
 /[ \t]+/        { /* eat up whitespace */ }
 /\n/ {return CR;}
-/./               { println("Unrecognized character:", yylex.Text()) }
+/./               {println("Unrecognized character:", yylex.Text())}
 //
 package main
 import "os"
