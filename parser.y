@@ -4,22 +4,6 @@ import "fmt"
 
 var line = 0
 
-
-func integer(val int) Node {
-    fmt.Printf("Integer", val)
-    return IntOp{INTEGER, val}
-}
-
-func decimal(val float64) Op {
-    fmt.Printf("Float", val)
-    return Op{DECIMAL, fmt.Sprintf("%f", val)}
-}
-
-func basString(val string) Node {
-    fmt.Printf("String", val)
-    return StringOp{STRING, val}
-}
-
 %}
 
 %union {
@@ -92,8 +76,8 @@ factor:
     ;
 
 number:
-    INTEGER                             { $$ = integer($1); }
-    | DECIMAL                           { $$ = decimal($1); }
+    INTEGER                             { $$ = IntOp{INTEGER, $1}; }
+    | DECIMAL                           { $$ = Op{DECIMAL, fmt.Sprintf("%f", $1)}; }
     ;
 
 v:
@@ -101,7 +85,7 @@ v:
     ;
 
 s:
-    STRING                              { $$ = basString($1);}
+    STRING                              { $$ = StringOp{STRING, $1};}
     ;
 
 relop:
