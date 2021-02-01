@@ -16,12 +16,15 @@ func opr(op int, nargs int, args ...interface{}) Node {
     if op == PRINT {
         return PrintOp{op, args[0].(Node)}
     }
-    return Op{op, nil}
+    if op == '+' || op == '-' || op == '*' || op == '/' {
+        return InfixOp{op, args[0].(Node), args[1].(Node), string(op)}
+    }
+    return Op{op, args[0].(string)}
 }
 
-func variable(name rune) Op {
+func variable(name string) Op {
     fmt.Printf("Variable", name)
-    return Op{VARIABLE, nil}
+    return Op{VARIABLE, name}
 }
 
 func integer(val int) Node {
@@ -31,7 +34,7 @@ func integer(val int) Node {
 
 func decimal(val float64) Op {
     fmt.Printf("Float", val)
-    return Op{DECIMAL, nil}
+    return Op{DECIMAL, fmt.Sprintf("%f", val)}
 }
 
 func basString(val string) Node {
@@ -42,7 +45,7 @@ func basString(val string) Node {
 %}
 
 %union {
-    v rune   /* Variable */
+    v string   /* Variable */
     s string /* String */
     num int  /* Integer constant. */
     dec float64  /* Decimal constant. */

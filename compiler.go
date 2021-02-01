@@ -18,16 +18,34 @@ type Node interface {
 	Type() int
 }
 
+// Generic Op is used for pass through operators (e.g. math) that
+// work the same way in BASIC as they do in Go.
 type Op struct {
 	opType   int
-	operands []Op
+	operator string
 }
 
 func (op Op) Type() int {
 	return op.opType
 }
 func (op Op) Execute() {
-	fmt.Fprint(writer, "// Generic Op")
+	fmt.Fprint(writer, op.operator)
+}
+
+type InfixOp struct {
+	opType   int
+	left     Node
+	right    Node
+	operator string
+}
+
+func (op InfixOp) Type() int {
+	return op.opType
+}
+func (op InfixOp) Execute() {
+	op.left.Execute()
+	fmt.Fprint(writer, op.operator)
+	op.right.Execute()
 }
 
 type StringOp struct {

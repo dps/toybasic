@@ -4,8 +4,10 @@ go run golang.org/x/tools/cmd/goyacc -o toybasic.go parser.y
 go build -o toybasic toybasic.go lexer.nn.go compiler.go
 
 
-echo "10 PRINT 1" | ./toybasic
+echo "10 PRINT 2 * 2 + 3" | ./toybasic
 echo
+echo ----- out.go -----
+cat out.go
 echo ------
-echo ------
+echo ----- Executing compiled binary -----
 go run out.go
