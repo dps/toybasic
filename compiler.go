@@ -62,6 +62,22 @@ func (op GroupingOp) Execute() {
 	fmt.Fprint(writer, ")")
 }
 
+type ListOp struct {
+	opType int
+	head   Node
+	tail   Node
+}
+
+func (op ListOp) Type() int {
+	return op.opType
+}
+func (op ListOp) Execute() {
+	// "," is only used inside PRINT statements
+	op.head.Execute()
+	fmt.Fprint(writer, ", ")
+	op.tail.Execute()
+}
+
 type StringOp struct {
 	opType int
 	val    string

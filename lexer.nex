@@ -14,7 +14,7 @@
 /[0-9]+\.[0-9]*/  { println("A float:", yylex.Text()) }
 /"[^"]*"/ { lval.s = yylex.Text();println("A string:", yylex.Text()); return STRING; }
 /[a-z]/  { println("An identifier:", yylex.Text()); lval.v = yylex.Text();  return VARIABLE }
-/\+|-|\*|\/|=|\(|\)/      { println("An operator:", yylex.Text()); return int(yylex.Text()[0]);}
+/\+|-|\*|\/|=|\(|\)|,/      { println("An operator:", yylex.Text()); return int(yylex.Text()[0]);}
 /[ \t]+/        { /* eat up whitespace */ }
 /\n/ { println ("CR"); return CR;}
 /./               { println("Unrecognized character:", yylex.Text()) }
