@@ -94,7 +94,7 @@ func (op RelOp) Type() int {
 }
 func (op RelOp) Execute() {
 	var relChar = map[int]string{
-		GT: ">",
+		GT: ">", LT: "<", LE: "<=", GE: ">=", EQ: "==", NE: "!=",
 	}
 	fmt.Fprintf(writer, relChar[op.opType])
 }

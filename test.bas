@@ -7,5 +7,10 @@
 70 PRINT "Hello", 2 * (2 + 3), 1, "World"
 80 LET a = 100
 90 PRINT a
-110 LET A = A + 1
+95 LET A = A + 1
 100 PRINT A
+110 LET e = 1
+120 IF (B+C+D)/E <= A THEN PRINT "Math works the way it should"
+130 IF 2 > 1 THEN GOTO 150
+140 PRINT "You should never see this"
+150 PRINT "Yeah!"
