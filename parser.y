@@ -105,12 +105,12 @@ s:
     ;
 
 relop:
-    LT                                  { $$ = opr(LT, 0); }
-    | LE                                { $$ = opr(LE, 0); }
-    | GT                                { $$ = opr(GT, 0); }
-    | GE                                { $$ = opr(GE, 0); }
-    | EQ                                { $$ = opr(EQ, 0); }
-    | NE                                { $$ = opr(NE, 0); }
+    LT                                  { $$ = RelOp{LT}; }
+    | LE                                { $$ = RelOp{LE}; }
+    | GT                                { $$ = RelOp{GT}; }
+    | GE                                { $$ = RelOp{GE}; }
+    | EQ                                { $$ = RelOp{EQ}; }
+    | NE                                { $$ = RelOp{NE}; }
     ;
 
 %%

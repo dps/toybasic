@@ -4,7 +4,7 @@ go run golang.org/x/tools/cmd/goyacc -o toybasic.go parser.y
 go build -o toybasic toybasic.go lexer.nn.go compiler.go
 
 
-echo "10 LET a = 1\n20 PRINT a" | ./toybasic
+echo "10 IF 2 > 1 THEN PRINT \"Math works the way it should\"" | ./toybasic
 echo
 echo ----- out.go -----
 cat out.go

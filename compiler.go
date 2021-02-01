@@ -49,6 +49,9 @@ func opr(op int, nargs int, args ...interface{}) Node {
 	if op == LET {
 		return LetOp{op, args[0].(VarOp), args[1].(Node)}
 	}
+	if op == IF {
+		return ConditionalOp{op, args[0].(Node), args[2].(Node), args[1].(RelOp), args[3].(Node)}
+	}
 	return Op{op, args[0].(string)}
 }
 
@@ -80,6 +83,40 @@ func (op LetOp) Execute() {
 	fmt.Fprintf(writer, "registers[%d] = ", regNum)
 	op.expression.Execute()
 	fmt.Fprintln(writer)
+}
+
+type RelOp struct {
+	opType int
+}
+
+func (op RelOp) Type() int {
+	return op.opType
+}
+func (op RelOp) Execute() {
+	if op.opType == GT {
+		fmt.Fprintf(writer, ">")
+	}
+}
+
+type ConditionalOp struct {
+	opType                int
+	left                  Node
+	right                 Node
+	relop                 RelOp
+	conditionalExpression Node
+}
+
+func (op ConditionalOp) Type() int {
+	return op.opType
+}
+func (op ConditionalOp) Execute() {
+	fmt.Fprintf(writer, `if (`)
+	op.left.Execute()
+	op.relop.Execute()
+	op.right.Execute()
+	fmt.Fprintln(writer, `) {`)
+	op.conditionalExpression.Execute()
+	fmt.Fprintln(writer, `}`)
 }
 
 type VarOp struct {
