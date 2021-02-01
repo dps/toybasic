@@ -67,13 +67,13 @@ term:
     ;
 
 factor:
-    v                                 { $$ = $1; }
+    v                                   { $$ = $1; }
     | number                            { $$ = $1; }
     | '(' expression ')'                { $$ = opr('(', 1, $2); }
     ;
 
 number:
-    INTEGER                             { $$ = IntOp{INTEGER, $1}; }
+    INTEGER                             { $$ = Op{INTEGER, fmt.Sprintf("%d", $1)}; }
     | DECIMAL                           { $$ = Op{DECIMAL, fmt.Sprintf("%f", $1)}; }
     ;
 

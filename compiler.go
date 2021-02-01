@@ -181,15 +181,6 @@ func (op StringOp) Generate() {
 	fmt.Fprint(writer, op.val)
 }
 
-type IntOp struct {
-	opType int
-	val    int
-}
-
-func (op IntOp) Generate() {
-	fmt.Fprint(writer, op.val)
-}
-
 type PrintOp struct {
 	opType     int
 	expression Node

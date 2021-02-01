@@ -6,6 +6,7 @@ Hello, World
 6
 Hello 10 1 World
 100
+3.14159
 101
 Math works the way it should
 Yeah!

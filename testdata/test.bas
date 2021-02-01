@@ -8,6 +8,8 @@
 80 LET a = 100
 90 PRINT a
 95 LET A = A + 1
+96 LET P = 3.14159
+97 PRINT P
 100 PRINT A
 110 LET e = 1
 120 IF (B+C+D)/E <= A THEN PRINT "Math works the way it should"
