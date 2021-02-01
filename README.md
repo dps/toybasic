@@ -1,6 +1,6 @@
 # toybasic
 
-A toy basic compiler playground in golang. I'm making this just for fun.
+This is a toy compiler for a simple dialect of BASIC in golang. I made this just for fun.
 
 Example program
 ```
@@ -8,19 +8,37 @@ Example program
 20 LET x = (3 * 2) + 3
 30 LET x = x + 1
 40 IF x == 10 THEN PRINT "Ten!"
-50 IF x > 20 THEN GOTO 70
+45 PRINT x
+50 IF x >= 15 THEN GOTO 70
 60 GOTO 30
 70 END
 ```
-
+Example output
+```
+$ ./toybasic <hello.bas
+$ go run out.go
+Hello, world.
+Ten!
+10
+11
+12
+13
+14
+15
+```
 # The lexer.
 I'm using `github.com/blynn/nex`
-
 ```
-go run github.com/blynn/nex toybasic.nex
+$ go run github.com/blynn/nex lexer.nex
 ```
 
 # The parser.
-I intend to use `goyacc`
+The parser uses `goyacc`
+```
+$ go run golang.org/x/tools/cmd/goyacc -o toybasic.go parser.y
+```
 
-`go run golang.org/x/tools/cmd/goyacc -o toybasic.go -p ToyBasic toybasic.y && go build toybasic.go toybasic.nn.go`
+# Build the compiler
+```
+$ go build -o toybasic toybasic.go lexer.nn.go compiler.go
+```
