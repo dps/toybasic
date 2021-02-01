@@ -4,10 +4,6 @@ import "fmt"
 
 var line = 0
 
-func variable(name string) Op {
-    fmt.Printf("Variable", name)
-    return Op{VARIABLE, name}
-}
 
 func integer(val int) Node {
     fmt.Printf("Integer", val)
@@ -101,7 +97,7 @@ number:
     ;
 
 v:
-    VARIABLE                            { $$ = variable($1); }
+    VARIABLE                            { $$ = VarOp{VARIABLE, $1}; }
     ;
 
 s:

@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
 var outfile *os.File
@@ -45,6 +46,9 @@ func opr(op int, nargs int, args ...interface{}) Node {
 	if op == GOTO {
 		return GotoOp{op, args[0].(Node)}
 	}
+	if op == LET {
+		return LetOp{op, args[0].(VarOp), args[1].(Node)}
+	}
 	return Op{op, args[0].(string)}
 }
 
@@ -60,6 +64,38 @@ func (op Op) Type() int {
 }
 func (op Op) Execute() {
 	fmt.Fprint(writer, op.operator)
+}
+
+type LetOp struct {
+	opType     int
+	variable   VarOp
+	expression Node
+}
+
+func (op LetOp) Type() int {
+	return op.opType
+}
+func (op LetOp) Execute() {
+	regNum := (strings.ToUpper(op.variable.VariableName())[0] - 'A')
+	fmt.Fprintf(writer, "registers[%d] = ", regNum)
+	op.expression.Execute()
+	fmt.Fprintln(writer)
+}
+
+type VarOp struct {
+	opType   int
+	variable string
+}
+
+func (op VarOp) Type() int {
+	return op.opType
+}
+func (op VarOp) VariableName() string {
+	return op.variable
+}
+func (op VarOp) Execute() {
+	regNum := (strings.ToUpper(op.variable)[0] - 'A')
+	fmt.Fprintf(writer, "registers[%d]", regNum)
 }
 
 type GotoOp struct {
