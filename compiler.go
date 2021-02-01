@@ -93,9 +93,10 @@ func (op RelOp) Type() int {
 	return op.opType
 }
 func (op RelOp) Execute() {
-	if op.opType == GT {
-		fmt.Fprintf(writer, ">")
+	var relChar = map[int]string{
+		GT: ">",
 	}
+	fmt.Fprintf(writer, relChar[op.opType])
 }
 
 type ConditionalOp struct {
