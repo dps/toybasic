@@ -16,7 +16,6 @@ type Line struct {
 }
 type Node interface {
 	Execute()
-	Type() int
 }
 
 func ex(op Node, lineNum int) Line {
@@ -49,16 +48,11 @@ func opr(op int, nargs int, args ...interface{}) Node {
 	return Op{op, args[0].(string)}
 }
 
-// Generic Op is used for pass through operators (e.g. math) that
-// work the same way in BASIC as they do in Go.
 type Op struct {
 	opType   int
 	operator string
 }
 
-func (op Op) Type() int {
-	return op.opType
-}
 func (op Op) Execute() {
 	fmt.Fprint(writer, op.operator)
 }
@@ -69,9 +63,6 @@ type LetOp struct {
 	expression Node
 }
 
-func (op LetOp) Type() int {
-	return op.opType
-}
 func (op LetOp) Execute() {
 	regNum := (strings.ToUpper(op.variable.VariableName())[0] - 'A')
 	fmt.Fprintf(writer, "registers[%d] = ", regNum)
@@ -83,9 +74,6 @@ type EndOp struct {
 	opType int
 }
 
-func (op EndOp) Type() int {
-	return op.opType
-}
 func (op EndOp) Execute() {
 	fmt.Fprintln(writer, "goto end")
 }
@@ -94,9 +82,6 @@ type RelOp struct {
 	opType int
 }
 
-func (op RelOp) Type() int {
-	return op.opType
-}
 func (op RelOp) Execute() {
 	var relChar = map[int]string{
 		GT: ">", LT: "<", LE: "<=", GE: ">=", EQ: "==", NE: "!=",
@@ -112,9 +97,6 @@ type ConditionalOp struct {
 	conditionalExpression Node
 }
 
-func (op ConditionalOp) Type() int {
-	return op.opType
-}
 func (op ConditionalOp) Execute() {
 	fmt.Fprintf(writer, `if (`)
 	op.left.Execute()
@@ -130,9 +112,6 @@ type VarOp struct {
 	variable string
 }
 
-func (op VarOp) Type() int {
-	return op.opType
-}
 func (op VarOp) VariableName() string {
 	return op.variable
 }
@@ -146,9 +125,6 @@ type GotoOp struct {
 	expression Node
 }
 
-func (op GotoOp) Type() int {
-	return op.opType
-}
 func (op GotoOp) Execute() {
 	fmt.Fprintf(writer, "goto label_")
 	op.expression.Execute()
@@ -161,9 +137,6 @@ type InfixOp struct {
 	operator string
 }
 
-func (op InfixOp) Type() int {
-	return op.opType
-}
 func (op InfixOp) Execute() {
 	op.left.Execute()
 	fmt.Fprint(writer, op.operator)
@@ -175,9 +148,6 @@ type GroupingOp struct {
 	expression Node
 }
 
-func (op GroupingOp) Type() int {
-	return op.opType
-}
 func (op GroupingOp) Execute() {
 	fmt.Fprint(writer, "(")
 	op.expression.Execute()
@@ -190,9 +160,6 @@ type ListOp struct {
 	tail   Node
 }
 
-func (op ListOp) Type() int {
-	return op.opType
-}
 func (op ListOp) Execute() {
 	// "," is only used inside PRINT statements
 	op.head.Execute()
@@ -205,9 +172,6 @@ type StringOp struct {
 	val    string
 }
 
-func (op StringOp) Type() int {
-	return op.opType
-}
 func (op StringOp) Execute() {
 	fmt.Fprint(writer, op.val)
 }
@@ -217,9 +181,6 @@ type IntOp struct {
 	val    int
 }
 
-func (op IntOp) Type() int {
-	return op.opType
-}
 func (op IntOp) Execute() {
 	fmt.Fprint(writer, op.val)
 }
@@ -229,9 +190,6 @@ type PrintOp struct {
 	expression Node
 }
 
-func (op PrintOp) Type() int {
-	return op.opType
-}
 func (op PrintOp) Execute() {
 	fmt.Fprint(writer, "fmt.Println(")
 	op.expression.Execute()

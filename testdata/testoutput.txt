@@ -1,0 +1,11 @@
+Hello, World
+1
+3
+-1
+9
+6
+Hello 10 1 World
+100
+101
+Math works the way it should
+Yeah!
