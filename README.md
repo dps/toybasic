@@ -1,6 +1,7 @@
 # toybasic
 
-This is a toy compiler for a simple dialect of BASIC in golang. I made this just for fun.
+This is a toy compiler for a simple dialect of BASIC in golang. It's written in Go and it generates (ugly!) Go code.
+I made this just for fun. The code is pretty short and hopefully easy to read. I hope you enjoy it too.
 
 Example program `example/hello.bas`
 ```VB

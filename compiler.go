@@ -19,6 +19,10 @@ type Node interface {
 }
 
 func ex(op Node, lineNum int) Line {
+	// This extra goto is required to prevent the Go compiler rejecting
+	// a label that is never jumped to. This could be cleaned up by doing
+	// a two pass compilation and statically analysing which labels get
+	// used. That's a nice exercise for a rainy day.
 	fmt.Fprintf(writer, "goto label_%d;", lineNum)
 	fmt.Fprintf(writer, "label_%d:", lineNum)
 	fmt.Fprintln(writer, " // line ", lineNum)
