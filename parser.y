@@ -19,6 +19,9 @@ func opr(op int, nargs int, args ...interface{}) Node {
     if op == '+' || op == '-' || op == '*' || op == '/' {
         return InfixOp{op, args[0].(Node), args[1].(Node), string(op)}
     }
+    if op == '(' {
+        return GroupingOp{op, args[0].(Node)}
+    }
     return Op{op, args[0].(string)}
 }
 

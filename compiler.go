@@ -48,6 +48,20 @@ func (op InfixOp) Execute() {
 	op.right.Execute()
 }
 
+type GroupingOp struct {
+	opType     int
+	expression Node
+}
+
+func (op GroupingOp) Type() int {
+	return op.opType
+}
+func (op GroupingOp) Execute() {
+	fmt.Fprint(writer, "(")
+	op.expression.Execute()
+	fmt.Fprint(writer, ")")
+}
+
 type StringOp struct {
 	opType int
 	val    string
