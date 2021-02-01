@@ -15,7 +15,7 @@ type Line struct {
 	statement Node
 }
 type Node interface {
-	Execute()
+	Generate()
 }
 
 func ex(op Node, lineNum int) Line {
@@ -23,7 +23,7 @@ func ex(op Node, lineNum int) Line {
 	fmt.Fprintf(writer, "label_%d:", lineNum)
 	fmt.Fprintln(writer, " // line ", lineNum)
 
-	op.Execute()
+	op.Generate()
 	return Line{lineNum, op}
 }
 
@@ -53,7 +53,7 @@ type Op struct {
 	operator string
 }
 
-func (op Op) Execute() {
+func (op Op) Generate() {
 	fmt.Fprint(writer, op.operator)
 }
 
@@ -63,10 +63,10 @@ type LetOp struct {
 	expression Node
 }
 
-func (op LetOp) Execute() {
+func (op LetOp) Generate() {
 	regNum := (strings.ToUpper(op.variable.VariableName())[0] - 'A')
 	fmt.Fprintf(writer, "registers[%d] = ", regNum)
-	op.expression.Execute()
+	op.expression.Generate()
 	fmt.Fprintln(writer)
 }
 
@@ -74,7 +74,7 @@ type EndOp struct {
 	opType int
 }
 
-func (op EndOp) Execute() {
+func (op EndOp) Generate() {
 	fmt.Fprintln(writer, "goto end")
 }
 
@@ -82,7 +82,7 @@ type RelOp struct {
 	opType int
 }
 
-func (op RelOp) Execute() {
+func (op RelOp) Generate() {
 	var relChar = map[int]string{
 		GT: ">", LT: "<", LE: "<=", GE: ">=", EQ: "==", NE: "!=",
 	}
@@ -97,13 +97,13 @@ type ConditionalOp struct {
 	conditionalExpression Node
 }
 
-func (op ConditionalOp) Execute() {
+func (op ConditionalOp) Generate() {
 	fmt.Fprintf(writer, `if (`)
-	op.left.Execute()
-	op.relop.Execute()
-	op.right.Execute()
+	op.left.Generate()
+	op.relop.Generate()
+	op.right.Generate()
 	fmt.Fprintln(writer, `) {`)
-	op.conditionalExpression.Execute()
+	op.conditionalExpression.Generate()
 	fmt.Fprintln(writer, `}`)
 }
 
@@ -115,7 +115,7 @@ type VarOp struct {
 func (op VarOp) VariableName() string {
 	return op.variable
 }
-func (op VarOp) Execute() {
+func (op VarOp) Generate() {
 	regNum := (strings.ToUpper(op.variable)[0] - 'A')
 	fmt.Fprintf(writer, "registers[%d]", regNum)
 }
@@ -125,9 +125,9 @@ type GotoOp struct {
 	expression Node
 }
 
-func (op GotoOp) Execute() {
+func (op GotoOp) Generate() {
 	fmt.Fprintf(writer, "goto label_")
-	op.expression.Execute()
+	op.expression.Generate()
 	fmt.Fprintf(writer, ";")
 }
 
@@ -138,10 +138,10 @@ type InfixOp struct {
 	operator string
 }
 
-func (op InfixOp) Execute() {
-	op.left.Execute()
+func (op InfixOp) Generate() {
+	op.left.Generate()
 	fmt.Fprint(writer, op.operator)
-	op.right.Execute()
+	op.right.Generate()
 }
 
 type GroupingOp struct {
@@ -149,9 +149,9 @@ type GroupingOp struct {
 	expression Node
 }
 
-func (op GroupingOp) Execute() {
+func (op GroupingOp) Generate() {
 	fmt.Fprint(writer, "(")
-	op.expression.Execute()
+	op.expression.Generate()
 	fmt.Fprint(writer, ")")
 }
 
@@ -161,11 +161,11 @@ type ListOp struct {
 	tail   Node
 }
 
-func (op ListOp) Execute() {
+func (op ListOp) Generate() {
 	// "," is only used inside PRINT statements
-	op.head.Execute()
+	op.head.Generate()
 	fmt.Fprint(writer, ", ")
-	op.tail.Execute()
+	op.tail.Generate()
 }
 
 type StringOp struct {
@@ -173,7 +173,7 @@ type StringOp struct {
 	val    string
 }
 
-func (op StringOp) Execute() {
+func (op StringOp) Generate() {
 	fmt.Fprint(writer, op.val)
 }
 
@@ -182,7 +182,7 @@ type IntOp struct {
 	val    int
 }
 
-func (op IntOp) Execute() {
+func (op IntOp) Generate() {
 	fmt.Fprint(writer, op.val)
 }
 
@@ -191,9 +191,9 @@ type PrintOp struct {
 	expression Node
 }
 
-func (op PrintOp) Execute() {
+func (op PrintOp) Generate() {
 	fmt.Fprint(writer, "fmt.Println(")
-	op.expression.Execute()
+	op.expression.Generate()
 	fmt.Fprintln(writer, ")")
 }
 

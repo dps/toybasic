@@ -1,17 +1,14 @@
 %{
 package main
 import "fmt"
-
-var line = 0
-
 %}
 
 %union {
-    v string   /* Variable */
-    s string /* String */
-    num int  /* Integer constant. */
-    dec float64  /* Decimal constant. */
-    node Node /* Node object. */
+    v string    /* Variable */
+    s string    /* String */
+    num int     /* Integer constant */
+    dec float64 /* Decimal constant */
+    node Node   /* Node in the AST */
 };
 
 %token <num> INTEGER
@@ -40,7 +37,7 @@ block:
     ;
 
 line:
-    INTEGER statement CR                { ex($2,$1); line = $1;}
+    INTEGER statement CR                { ex($2,$1); }
     ;
 
 statement:
@@ -98,4 +95,3 @@ relop:
     ;
 
 %%
-
