@@ -11,6 +11,11 @@
 100 PRINT A
 110 LET e = 1
 120 IF (B+C+D)/E <= A THEN PRINT "Math works the way it should"
+121 IF 1 != 1 THEN PRINT "Math is broken"
+122 IF 1 < 1 THEN PRINT "Math is broken"
+123 IF 1 > 1 THEN PRINT "Math is broken"
+124 IF 1 >= 2 THEN PRINT "Math is broken"
+125 IF 2 == 1 THEN PRINT "Math is broken"
 130 IF 2 > 1 THEN GOTO 150
 140 PRINT "You should never see this"
 150 PRINT "Yeah!"

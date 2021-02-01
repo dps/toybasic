@@ -12,10 +12,10 @@
 /!=/ {return NE}
 /[0-9]+/                {lval.num, _ = strconv.Atoi(yylex.Text()); return INTEGER}
 /[0-9]+\.[0-9]*/        {lval.dec, _ = strconv.ParseFloat(yylex.Text(), 64);return DECIMAL}
-/"[^"]*"/               { lval.s = yylex.Text(); return STRING}
-/[a-zA-Z]/              { lval.v = yylex.Text(); return VARIABLE}
-/\+|-|\*|\/|=|\(|\)|,/  { /* use the char value of themselves as IDs*/ return int(yylex.Text()[0]);}
-/[ \t]+/                { /* eat up whitespace */ }
+/"[^"]*"/               {lval.s = yylex.Text(); return STRING}
+/[a-zA-Z]/              {lval.v = yylex.Text(); return VARIABLE}
+/\+|-|\*|\/|=|\(|\)|,/  {/* use the char value of themselves as IDs*/ return int(yylex.Text()[0])}
+/[ \t]+/                {/* eat up whitespace */}
 /\n/ {return CR;}
 /./  {println("Unrecognized character:", yylex.Text())}
 //
@@ -23,7 +23,6 @@ package main
 import "os"
 import "strconv"
 func main() {
-  OpenOutput()
   WriteLeader()
   lex := NewLexer(os.Stdin)
 	yyErrorVerbose = true

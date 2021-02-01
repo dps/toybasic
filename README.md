@@ -2,7 +2,7 @@
 
 This is a toy compiler for a simple dialect of BASIC in golang. I made this just for fun.
 
-Example program
+Example program `example/hello.bas`
 ```VB
 10 PRINT "Hello, world."
 20 LET x = (3 * 2) + 3
@@ -15,7 +15,7 @@ Example program
 ```
 Example output
 ```
-$ ./toybasic <hello.bas
+$ ./toybasic <example/hello.bas
 $ go run out.go
 Hello, world.
 Ten!

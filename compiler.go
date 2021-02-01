@@ -206,6 +206,7 @@ func OpenOutput() {
 	writer = bufio.NewWriter(outfile)
 }
 func WriteLeader() {
+	OpenOutput()
 	fmt.Fprintln(writer, "package main")
 	fmt.Fprint(writer, `
 import "fmt"
